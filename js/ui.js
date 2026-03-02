@@ -693,25 +693,40 @@ const UI = (() => {
       });
     }
 
-    // Tab switching
+    // Tab switching — also opens drawer if it's in peek state
     document.querySelectorAll('.drawer-tab').forEach(tab => {
-      tab.addEventListener('click', () => _setDrawerTab(tab.dataset.tab));
+      tab.addEventListener('click', () => {
+        _setDrawerTab(tab.dataset.tab);
+        if (!drawerOpen) openDrawer();
+      });
     });
 
-    // Drag handle to close (swipe down)
+    // Drag handle: swipe down → close, swipe up → open, tap → toggle
     let dragStart = null;
+    let didDrag   = false;
     handle.addEventListener('pointerdown', e => {
       dragStart = e.clientY;
+      didDrag   = false;
       handle.setPointerCapture(e.pointerId);
     });
     handle.addEventListener('pointermove', e => {
       if (dragStart === null) return;
-      if (e.clientY - dragStart > 40) {
+      const delta = e.clientY - dragStart;
+      if (delta > 40) {
+        didDrag = true;
         closeDrawer();
+        dragStart = null;
+      } else if (delta < -40) {
+        didDrag = true;
+        openDrawer();
         dragStart = null;
       }
     });
-    handle.addEventListener('pointerup', () => { dragStart = null; });
+    handle.addEventListener('pointerup', () => {
+      if (!didDrag) toggleDrawer();   // tap with no drag = toggle
+      dragStart = null;
+      didDrag   = false;
+    });
 
     // Drawer tile apply buttons
     const dApplyTiles = document.getElementById('d-btn-apply-tiles');

@@ -593,7 +593,8 @@ input[type="range"] {
   background: var(--bg1);
   border-top: 2px solid var(--accent);
   border-radius: 16px 16px 0 0;
-  transform: translateY(100%);
+  /* Peek: show just the handle + tab row above the mobile bar */
+  transform: translateY(calc(100% - var(--drawer-peek)));
   transition: transform .3s cubic-bezier(.4,0,.2,1);
   z-index: 200;
   display: flex;
@@ -747,7 +748,8 @@ input[type="range"] {
   .mobile-only  { display: flex !important; }
 
   #main-area {
-    height: calc(100dvh - var(--toolbar-h) - var(--status-h) - var(--mob-bar-h) - env(safe-area-inset-bottom));
+    /* subtract toolbar + mobile bar + drawer peek strip (status bar is hidden on mobile) */
+    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - var(--drawer-peek) - env(safe-area-inset-bottom));
   }
 
   #tools-panel  { display: none !important; }
@@ -778,7 +780,7 @@ input[type="range"] {
   .pen-settings  { display: none; }
 
   #main-area {
-    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - env(safe-area-inset-bottom));
+    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - var(--drawer-peek) - env(safe-area-inset-bottom));
   }
 }
 
