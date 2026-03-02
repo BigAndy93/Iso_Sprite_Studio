@@ -677,10 +677,27 @@ const UI = (() => {
     if (!drawer) return;
 
     let drawerOpen = false;
+    const backdrop = document.getElementById('drawer-backdrop');
 
-    const openDrawer  = () => { drawerOpen = true;  drawer.classList.add('open');    if(btnOpen) btnOpen.textContent='✕'; };
-    const closeDrawer = () => { drawerOpen = false; drawer.classList.remove('open'); if(btnOpen) btnOpen.textContent='☰'; };
-    const toggleDrawer= () => drawerOpen ? closeDrawer() : openDrawer();
+    const openDrawer = () => {
+      drawerOpen = true;
+      drawer.classList.add('open');
+      if (backdrop) backdrop.classList.add('visible');
+      if (btnOpen)  { btnOpen.textContent = '✕'; btnOpen.classList.add('active'); }
+    };
+    const closeDrawer = () => {
+      drawerOpen = false;
+      drawer.classList.remove('open');
+      if (backdrop) backdrop.classList.remove('visible');
+      if (btnOpen)  { btnOpen.textContent = '☰'; btnOpen.classList.remove('active'); }
+    };
+    const toggleDrawer = () => drawerOpen ? closeDrawer() : openDrawer();
+
+    // Tap/touch backdrop → close
+    if (backdrop) {
+      backdrop.addEventListener('click', closeDrawer);
+      backdrop.addEventListener('touchend', e => { e.preventDefault(); closeDrawer(); });
+    }
 
     if (btnOpen) btnOpen.addEventListener('click', toggleDrawer);
 
