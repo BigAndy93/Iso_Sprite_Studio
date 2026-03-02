@@ -583,6 +583,22 @@ input[type="range"] {
 .drawer-toggle:hover { background: #6b5ce7; }
 
 /* ══════════════════════════════════════════════
+   DRAWER BACKDROP
+   ══════════════════════════════════════════════ */
+/* Covers the canvas area only (toolbar and mobile bar stay clear) */
+#drawer-backdrop {
+  display: none;
+  position: fixed;
+  top: var(--toolbar-h);
+  left: 0; right: 0;
+  bottom: calc(var(--mob-bar-h) + env(safe-area-inset-bottom));
+  background: rgba(0,0,0,0.45);
+  z-index: 190;          /* above canvas, below drawer */
+  touch-action: none;
+}
+#drawer-backdrop.visible { display: block; }
+
+/* ══════════════════════════════════════════════
    MOBILE BOTTOM DRAWER
    ══════════════════════════════════════════════ */
 #mobile-drawer {
@@ -622,6 +638,11 @@ input[type="range"] {
   background: var(--border);
   border-radius: 2px;
 }
+/* Pill turns accent when drawer is open — signals "swipe down to close" */
+#mobile-drawer.open #drawer-handle::after { background: var(--accent); }
+
+/* ☰ button highlights when drawer is active */
+.drawer-toggle.active { background: var(--accent) !important; color: #fff !important; }
 
 #drawer-tabs {
   display: flex;
