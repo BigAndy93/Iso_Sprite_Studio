@@ -524,18 +524,18 @@ input[type="range"] {
   border-top: 1px solid var(--border);
   display: flex;
   align-items: center;
-  justify-content: space-around;
-  padding: 0 8px;
+  justify-content: space-between;
+  padding: 0 4px;
   padding-bottom: env(safe-area-inset-bottom);
   flex-shrink: 0;
-  gap: 4px;
+  gap: 2px;
   z-index: 100;
 }
 
 .mob-tool-btn {
-  width: 48px;
+  flex: 1;
+  min-width: 0;
   height: 48px;
-  min-width: 48px;
   background: transparent;
   border: 1px solid transparent;
   border-radius: 8px;
@@ -547,24 +547,26 @@ input[type="range"] {
   transition: all .12s;
   padding: 0;
 }
-.mob-tool-btn svg { width: 24px; height: 24px; fill: currentColor; }
+.mob-tool-btn svg { width: 22px; height: 22px; fill: currentColor; flex-shrink: 0; }
 .mob-tool-btn:hover  { background: var(--bg3); color: var(--text); border-color: var(--border); }
 .mob-tool-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
 
 .mob-color-swatch {
-  width: 40px;
+  flex: 1;
+  min-width: 0;
+  max-width: 48px;
   height: 40px;
   border-radius: 8px;
   border: 2px solid var(--border);
   cursor: pointer;
   background: #000;
-  flex-shrink: 0;
+  flex-shrink: 1;
 }
 
 .mob-action-btn {
-  width: 48px;
+  flex: 1;
+  min-width: 0;
   height: 48px;
-  min-width: 48px;
   background: var(--btn-bg);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -591,7 +593,8 @@ input[type="range"] {
   background: var(--bg1);
   border-top: 2px solid var(--accent);
   border-radius: 16px 16px 0 0;
-  transform: translateY(100%);
+  /* Peek: show just the handle + tab row above the mobile bar */
+  transform: translateY(calc(100% - var(--drawer-peek)));
   transition: transform .3s cubic-bezier(.4,0,.2,1);
   z-index: 200;
   display: flex;
@@ -745,7 +748,8 @@ input[type="range"] {
   .mobile-only  { display: flex !important; }
 
   #main-area {
-    height: calc(100dvh - var(--toolbar-h) - var(--status-h) - var(--mob-bar-h) - env(safe-area-inset-bottom));
+    /* subtract toolbar + mobile bar + drawer peek strip (status bar is hidden on mobile) */
+    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - var(--drawer-peek) - env(safe-area-inset-bottom));
   }
 
   #tools-panel  { display: none !important; }
@@ -776,7 +780,7 @@ input[type="range"] {
   .pen-settings  { display: none; }
 
   #main-area {
-    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - env(safe-area-inset-bottom));
+    height: calc(100dvh - var(--toolbar-h) - var(--mob-bar-h) - var(--drawer-peek) - env(safe-area-inset-bottom));
   }
 }
 
