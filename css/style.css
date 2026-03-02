@@ -604,13 +604,23 @@ input[type="range"] {
 #mobile-drawer.open { transform: translateY(0); }
 
 #drawer-handle {
+  width: 100%;           /* full-width touch zone */
+  height: 36px;          /* large enough to tap reliably */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  cursor: grab;
+  touch-action: none;    /* let JS handle vertical swipe */
+}
+/* visual pill lives in ::after so the hit-box stays large */
+#drawer-handle::after {
+  content: '';
+  display: block;
   width: 40px;
   height: 4px;
   background: var(--border);
   border-radius: 2px;
-  margin: 10px auto 0;
-  flex-shrink: 0;
-  cursor: grab;
 }
 
 #drawer-tabs {

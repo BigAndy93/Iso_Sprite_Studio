@@ -693,39 +693,54 @@ const UI = (() => {
       });
     }
 
-    // Tab switching — also opens drawer if it's in peek state
+    // Tab switching — also opens drawer if it's in peek state.
+    // Use touchend (+preventDefault) for instant mobile response; click as fallback.
     document.querySelectorAll('.drawer-tab').forEach(tab => {
-      tab.addEventListener('click', () => {
+      let tabTouchY = null;
+      tab.addEventListener('touchstart', e => { tabTouchY = e.touches[0].clientY; }, { passive: true });
+      tab.addEventListener('touchend', e => {
+        const dy = tabTouchY !== null ? Math.abs(e.changedTouches[0].clientY - tabTouchY) : 99;
+        tabTouchY = null;
+        if (dy > 10) return;             // ignore if user was scrolling
+        e.preventDefault();              // suppress the delayed synthetic click
+        _setDrawerTab(tab.dataset.tab);
+        if (!drawerOpen) openDrawer();
+      });
+      tab.addEventListener('click', () => { // desktop / non-touch fallback
         _setDrawerTab(tab.dataset.tab);
         if (!drawerOpen) openDrawer();
       });
     });
 
-    // Drag handle: swipe down → close, swipe up → open, tap → toggle
-    let dragStart = null;
-    let didDrag   = false;
-    handle.addEventListener('pointerdown', e => {
-      dragStart = e.clientY;
-      didDrag   = false;
-      handle.setPointerCapture(e.pointerId);
+    // Handle: swipe down → close, swipe up → open, tap → toggle.
+    // Native touch events are more reliable than pointer events on Android.
+    let touchY0 = null, touchMoved = false;
+    handle.addEventListener('touchstart', e => {
+      touchY0    = e.touches[0].clientY;
+      touchMoved = false;
+    }, { passive: true });
+    handle.addEventListener('touchmove', e => {
+      if (touchY0 === null) return;
+      const dy = e.touches[0].clientY - touchY0;
+      if (dy > 40)       { touchMoved = true; closeDrawer(); touchY0 = null; }
+      else if (dy < -40) { touchMoved = true; openDrawer();  touchY0 = null; }
+    }, { passive: true });
+    handle.addEventListener('touchend', e => {
+      if (!touchMoved) { e.preventDefault(); toggleDrawer(); }
+      touchY0 = null; touchMoved = false;
     });
-    handle.addEventListener('pointermove', e => {
-      if (dragStart === null) return;
-      const delta = e.clientY - dragStart;
-      if (delta > 40) {
-        didDrag = true;
-        closeDrawer();
-        dragStart = null;
-      } else if (delta < -40) {
-        didDrag = true;
-        openDrawer();
-        dragStart = null;
-      }
+    // Mouse fallback for desktop testing
+    let mouseY0 = null, mouseMoved = false;
+    handle.addEventListener('mousedown', e => { mouseY0 = e.clientY; mouseMoved = false; });
+    handle.addEventListener('mousemove', e => {
+      if (mouseY0 === null) return;
+      const dy = e.clientY - mouseY0;
+      if (dy > 40)       { mouseMoved = true; closeDrawer(); mouseY0 = null; }
+      else if (dy < -40) { mouseMoved = true; openDrawer();  mouseY0 = null; }
     });
-    handle.addEventListener('pointerup', () => {
-      if (!didDrag) toggleDrawer();   // tap with no drag = toggle
-      dragStart = null;
-      didDrag   = false;
+    handle.addEventListener('mouseup', () => {
+      if (!mouseMoved) toggleDrawer();
+      mouseY0 = null; mouseMoved = false;
     });
 
     // Drawer tile apply buttons
