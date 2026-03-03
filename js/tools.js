@@ -115,6 +115,10 @@ const Tools = (() => {
   function onPointerDown(e) {
     e.preventDefault();
 
+    // Capture so pointermove keeps firing even if fingers stray outside the canvas.
+    // Essential for reliable pinch-zoom on Android / Samsung S Pen.
+    try { e.currentTarget.setPointerCapture(e.pointerId); } catch (_) {}
+
     activePointers.set(e.pointerId, { x: e.clientX, y: e.clientY, type: e.pointerType });
 
     // Two or more pointers → gesture mode, cancel drawing

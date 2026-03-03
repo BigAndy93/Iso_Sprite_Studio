@@ -266,7 +266,7 @@ const UI = (() => {
       tileW: 128,   tileH: 128,
       tilesX: 1,    tilesY: 1,
     },
-    '4-direction': {
+    '4-direction-flip': {
       canvasW: 256, canvasH: 256,
       tileW: 128,   tileH: 128,
       tilesX: 2,    tilesY: 2,
