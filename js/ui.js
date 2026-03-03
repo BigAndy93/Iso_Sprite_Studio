@@ -292,31 +292,40 @@ const UI = (() => {
   }
 
   function _applyTiles() {
-    S.tileW  = Math.max(8,  parseInt(document.getElementById('tile-w').value,  10) || 64);
-    S.tileH  = Math.max(8,  parseInt(document.getElementById('tile-h').value,  10) || 64);
-    S.tilesX = Math.max(1,  parseInt(document.getElementById('tiles-x').value, 10) || 4);
-    S.tilesY = Math.max(1,  parseInt(document.getElementById('tiles-y').value, 10) || 4);
-    // Sync drawer fields
-    ['d-tile-w','d-tile-h','d-tiles-x','d-tiles-y'].forEach((id,i) => {
-      const el = document.getElementById(id);
-      if (el) el.value = [S.tileW, S.tileH, S.tilesX, S.tilesY][i];
-    });
-    Renderer.drawOverlay();
-    updateTileNav();
+    S.tileW  = Math.max(8,  parseInt(document.getElementById('tile-w').value,  10) || 128);
+    S.tileH  = Math.max(8,  parseInt(document.getElementById('tile-h').value,  10) || 128);
+    S.tilesX = Math.max(1,  parseInt(document.getElementById('tiles-x').value, 10) || 2);
+    S.tilesY = Math.max(1,  parseInt(document.getElementById('tiles-y').value, 10) || 2);
+    _resizeCanvasToTiles();
   }
 
   function _applyTilesFromDrawer() {
-    S.tileW  = Math.max(8,  parseInt(document.getElementById('d-tile-w').value,  10) || 64);
-    S.tileH  = Math.max(8,  parseInt(document.getElementById('d-tile-h').value,  10) || 64);
-    S.tilesX = Math.max(1,  parseInt(document.getElementById('d-tiles-x').value, 10) || 4);
-    S.tilesY = Math.max(1,  parseInt(document.getElementById('d-tiles-y').value, 10) || 4);
-    // Sync desktop fields
-    ['tile-w','tile-h','tiles-x','tiles-y'].forEach((id,i) => {
+    S.tileW  = Math.max(8,  parseInt(document.getElementById('d-tile-w').value,  10) || 128);
+    S.tileH  = Math.max(8,  parseInt(document.getElementById('d-tile-h').value,  10) || 128);
+    S.tilesX = Math.max(1,  parseInt(document.getElementById('d-tiles-x').value, 10) || 2);
+    S.tilesY = Math.max(1,  parseInt(document.getElementById('d-tiles-y').value, 10) || 2);
+    _resizeCanvasToTiles();
+  }
+
+  function _resizeCanvasToTiles() {
+    const w = S.tilesX * S.tileW;
+    const h = S.tilesY * S.tileH;
+    S.saveHistory();
+    S.initPixels(w, h, true);
+    Renderer.resizeCanvases(w, h);
+    Renderer.drawChecker();
+    Renderer.redrawAll();
+    updateSheetLabel();
+    fitToWindow();
+    // Sync all tile + canvas fields
+    ['tile-w','tile-h','tiles-x','tiles-y','d-tile-w','d-tile-h','d-tiles-x','d-tiles-y'].forEach((id,i) => {
       const el = document.getElementById(id);
-      if (el) el.value = [S.tileW, S.tileH, S.tilesX, S.tilesY][i];
+      if (el) el.value = [S.tileW, S.tileH, S.tilesX, S.tilesY, S.tileW, S.tileH, S.tilesX, S.tilesY][i];
     });
-    Renderer.drawOverlay();
-    updateTileNav();
+    ['canvas-w','canvas-h','d-canvas-w','d-canvas-h'].forEach((id,i) => {
+      const el = document.getElementById(id);
+      if (el) el.value = [w, h, w, h][i];
+    });
   }
 
   function _readDiamond() {
