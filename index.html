@@ -61,6 +61,12 @@
       <input type="number" id="diamond-w" value="64" min="8" max="512" title="Diamond width" class="diamond-input">
       <span class="tb-x">×</span>
       <input type="number" id="diamond-h" value="32" min="4" max="256" title="Diamond height" class="diamond-input">
+      <span class="tb-pipe">|</span>
+      <span class="tb-x">+X</span>
+      <input type="number" id="iso-offset-x" value="0" step="1" min="-512" max="512" title="ISO guide X nudge" class="diamond-input">
+      <span class="tb-x">+Y</span>
+      <input type="number" id="iso-offset-y" value="0" step="1" min="-512" max="512" title="ISO guide Y nudge" class="diamond-input">
+      <button id="iso-offset-reset" class="tb-btn icon-btn" title="Reset ISO offset to (0,0)">↺</button>
     </div>
 
     <div class="toolbar-sep"></div>
@@ -438,6 +444,16 @@
         <div class="drawer-row" style="margin-top:6px">
           <label>ISO◇ W</label><input type="number" id="d-diamond-w" value="64" min="8" max="512">
           <label>H</label><input type="number" id="d-diamond-h" value="32" min="4" max="256">
+        </div>
+        <div class="drawer-row" style="margin-top:4px">
+          <label>ISO ⊕</label>
+          <button class="nudge-btn" data-iso-axis="x" data-iso-dir="-1" title="Nudge left">◀</button>
+          <input type="number" id="d-iso-offset-x" value="0" min="-512" max="512" style="width:42px" title="X offset">
+          <button class="nudge-btn" data-iso-axis="x" data-iso-dir="1" title="Nudge right">▶</button>
+          <button class="nudge-btn" data-iso-axis="y" data-iso-dir="-1" title="Nudge up">▲</button>
+          <input type="number" id="d-iso-offset-y" value="0" min="-512" max="512" style="width:42px" title="Y offset">
+          <button class="nudge-btn" data-iso-axis="y" data-iso-dir="1" title="Nudge down">▼</button>
+          <button class="nudge-btn" id="d-iso-offset-reset" title="Reset offset">↺</button>
         </div>
         <div class="drawer-row">
           <label>Canvas W</label><input type="number" id="d-canvas-w" value="512" min="64" max="4096">

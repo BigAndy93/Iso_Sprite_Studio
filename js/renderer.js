@@ -121,8 +121,8 @@ const Renderer = (() => {
 
     for (let ty = 0; ty < S.tilesY; ty++) {
       for (let tx = 0; tx < S.tilesX; tx++) {
-        const cx = tx * S.tileW + S.tileW / 2;
-        const cy = ty * S.tileH + S.tileH / 2;
+        const cx = tx * S.tileW + S.tileW / 2 + S.isoOffsetX;
+        const cy = ty * S.tileH + S.tileH / 2 + S.isoOffsetY;
 
         // Gradient from magenta to cyan per tile for visual variety
         ctx.strokeStyle = 'rgba(233,69,96,0.55)';

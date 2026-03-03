@@ -120,6 +120,9 @@ button:active { background: var(--btn-act); transform: scale(.97); }
 
 .icon-btn { padding: 4px 8px; min-width: 28px; }
 
+/* Small square buttons used for directional nudge controls */
+.nudge-btn { width: 28px; height: 28px; padding: 0; font-size: 12px; min-width: 0; flex-shrink: 0; }
+
 /* ── Toggle switch ── */
 .toggle-wrap {
   display: inline-flex;

@@ -224,6 +224,16 @@ const UI = (() => {
     ['diamond-w','diamond-h'].forEach(id => {
       document.getElementById(id).addEventListener('change', () => _readDiamond());
     });
+    // ISO offset nudge (desktop)
+    ['iso-offset-x','iso-offset-y'].forEach(id => {
+      document.getElementById(id).addEventListener('input', () => {
+        S.isoOffsetX = parseInt(document.getElementById('iso-offset-x').value, 10) || 0;
+        S.isoOffsetY = parseInt(document.getElementById('iso-offset-y').value, 10) || 0;
+        _syncIsoOffset();
+        if (S.showIso) Renderer.drawOverlay();
+      });
+    });
+    document.getElementById('iso-offset-reset').addEventListener('click', () => _setIsoOffset(0, 0));
 
     // Undo/Redo
     document.getElementById('btn-undo').addEventListener('click', _undo);
@@ -317,6 +327,22 @@ const UI = (() => {
     if (dw) dw.value = S.diamondW;
     if (dh) dh.value = S.diamondH;
     if (S.showIso) Renderer.drawOverlay();
+  }
+
+  function _setIsoOffset(x, y) {
+    S.isoOffsetX = x;
+    S.isoOffsetY = y;
+    _syncIsoOffset();
+    if (S.showIso) Renderer.drawOverlay();
+  }
+
+  function _syncIsoOffset() {
+    ['iso-offset-x', 'd-iso-offset-x'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = S.isoOffsetX;
+    });
+    ['iso-offset-y', 'd-iso-offset-y'].forEach(id => {
+      const el = document.getElementById(id); if (el) el.value = S.isoOffsetY;
+    });
   }
 
   function _syncIsoToggle(checked) {
@@ -787,6 +813,28 @@ const UI = (() => {
         if (S.showIso) Renderer.drawOverlay();
       });
     });
+
+    // ISO nudge buttons (◀ ▶ ▲ ▼)
+    document.querySelectorAll('.nudge-btn[data-iso-axis]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const dir = parseInt(btn.dataset.isoDir, 10);
+        if (btn.dataset.isoAxis === 'x') _setIsoOffset(S.isoOffsetX + dir, S.isoOffsetY);
+        else                             _setIsoOffset(S.isoOffsetX, S.isoOffsetY + dir);
+      });
+    });
+    // ISO offset direct edits (mobile number inputs)
+    ['d-iso-offset-x','d-iso-offset-y'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', () => {
+        _setIsoOffset(
+          parseInt(document.getElementById('d-iso-offset-x').value, 10) || 0,
+          parseInt(document.getElementById('d-iso-offset-y').value, 10) || 0
+        );
+      });
+    });
+    const dIsoReset = document.getElementById('d-iso-offset-reset');
+    if (dIsoReset) dIsoReset.addEventListener('click', () => _setIsoOffset(0, 0));
   }
 
   function _setDrawerTab(tabId) {
@@ -812,6 +860,8 @@ const UI = (() => {
       const el = document.getElementById(id);
       if (el) el.value = [S.diamondW, S.diamondH][i];
     });
+    // ISO offset sync
+    _syncIsoOffset();
   }
 
   /* ──────────────────────────────────────────

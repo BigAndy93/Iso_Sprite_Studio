@@ -17,6 +17,8 @@ const S = {
   showIso:  false,
   diamondW: 64,
   diamondH: 32,
+  isoOffsetX: 0,
+  isoOffsetY: 0,
 
   /* ── Viewport overlays ── */
   showGrid:   true,
