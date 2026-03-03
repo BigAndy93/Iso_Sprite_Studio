@@ -27,6 +27,7 @@ window.addEventListener('DOMContentLoaded', () => {
   /* 6. Build tile navigator */
   UI.updateTileNav();
   UI.updatePivotPanel();
+  UI.updateDiamondNudgePanel();
   UI.updateActiveTileLabel();
   UI.updateSheetLabel();
 

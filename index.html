@@ -240,6 +240,36 @@
         </div>
       </section>
 
+      <!-- ISO Diamond Nudge -->
+      <section class="prop-section">
+        <div class="prop-header" data-section="iso-nudge">
+          <span>ISO Diamond Nudge</span><span class="chevron">▾</span>
+        </div>
+        <div class="prop-body" id="sec-iso-nudge">
+          <div class="prop-row">
+            <label class="prop-label">Tile</label>
+            <span id="nudge-tile-lbl" class="prop-val">–</span>
+          </div>
+          <div class="prop-row">
+            <label class="prop-label">X</label>
+            <input type="number" id="nudge-x" placeholder="0" style="width:52px">
+            <label class="prop-label" style="margin-left:6px">Y</label>
+            <input type="number" id="nudge-y" placeholder="0" style="width:52px">
+          </div>
+          <div class="prop-actions">
+            <button id="btn-nudge-left"  title="Nudge left (−X)">◄</button>
+            <button id="btn-nudge-right" title="Nudge right (+X)">►</button>
+            <button id="btn-nudge-up"    title="Nudge up (−Y)">▲</button>
+            <button id="btn-nudge-down"  title="Nudge down (+Y)">▼</button>
+          </div>
+          <div class="prop-actions">
+            <button id="btn-nudge-copy">Copy</button>
+            <button id="btn-nudge-paste-all">Paste All</button>
+            <button id="btn-nudge-clear">Clear</button>
+          </div>
+        </div>
+      </section>
+
       <!-- Background Removal -->
       <section class="prop-section">
         <div class="prop-header" data-section="bg">
@@ -438,6 +468,18 @@
         <div class="drawer-row" style="margin-top:6px">
           <label>ISO◇ W</label><input type="number" id="d-diamond-w" value="64" min="8" max="512">
           <label>H</label><input type="number" id="d-diamond-h" value="32" min="4" max="256">
+        </div>
+        <div class="drawer-row">
+          <label>Nudge X</label><input type="number" id="d-nudge-x" placeholder="0" style="width:52px">
+          <label>Y</label><input type="number" id="d-nudge-y" placeholder="0" style="width:52px">
+        </div>
+        <div class="drawer-row">
+          <button id="d-btn-nudge-left"  title="Nudge left">◄</button>
+          <button id="d-btn-nudge-right" title="Nudge right">►</button>
+          <button id="d-btn-nudge-up"    title="Nudge up">▲</button>
+          <button id="d-btn-nudge-down"  title="Nudge down">▼</button>
+          <button id="d-btn-nudge-clear">Clear</button>
+          <button id="d-btn-nudge-paste-all">Paste All</button>
         </div>
         <div class="drawer-row">
           <label>Canvas W</label><input type="number" id="d-canvas-w" value="512" min="64" max="4096">

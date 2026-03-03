@@ -56,6 +56,10 @@ const S = {
   pivots:      {},
   copiedPivot: null,
 
+  /* ── ISO diamond nudge per-tile: key = "tx,ty" → {dx, dy} ── */
+  diamondNudges: {},
+  copiedNudge:   null,
+
   /* ── Marquee selection: sheet-pixel coords ── */
   selection:   null,   // {x1,y1,x2,y2} or null
   isSelecting: false,
@@ -172,6 +176,15 @@ S.pivotKey = (tx, ty) => `${tx},${ty}`;
 S.getPivot  = (tx, ty) => S.pivots[S.pivotKey(tx, ty)] || null;
 S.setPivot  = (tx, ty, x, y) => { S.pivots[S.pivotKey(tx, ty)] = { x, y }; };
 S.clearPivot= (tx, ty) => { delete S.pivots[S.pivotKey(tx, ty)]; };
+
+/* ═══════════════════════════════════
+   Diamond nudge helpers
+   ═══════════════════════════════════ */
+
+S.nudgeKey       = (tx, ty) => `${tx},${ty}`;
+S.getDiamondNudge  = (tx, ty) => S.diamondNudges[S.nudgeKey(tx, ty)] || null;
+S.setDiamondNudge  = (tx, ty, dx, dy) => { S.diamondNudges[S.nudgeKey(tx, ty)] = { dx, dy }; };
+S.clearDiamondNudge= (tx, ty) => { delete S.diamondNudges[S.nudgeKey(tx, ty)]; };
 
 /* ═══════════════════════════════════
    Color conversion helpers

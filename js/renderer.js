@@ -121,12 +121,15 @@ const Renderer = (() => {
 
     for (let ty = 0; ty < S.tilesY; ty++) {
       for (let tx = 0; tx < S.tilesX; tx++) {
-        const cx = tx * S.tileW + S.tileW / 2;
-        const cy = ty * S.tileH + S.tileH / 2;
+        const nudge = S.getDiamondNudge(tx, ty);
+        const dx = nudge ? nudge.dx : 0;
+        const dy = nudge ? nudge.dy : 0;
+        const cx = tx * S.tileW + S.tileW / 2 + dx;
+        const cy = ty * S.tileH + S.tileH / 2 + dy;
 
-        // Gradient from magenta to cyan per tile for visual variety
-        ctx.strokeStyle = 'rgba(233,69,96,0.55)';
-        ctx.fillStyle   = 'rgba(233,69,96,0.04)';
+        const hasNudge = dx !== 0 || dy !== 0;
+        ctx.strokeStyle = hasNudge ? 'rgba(61,214,140,0.75)' : 'rgba(233,69,96,0.55)';
+        ctx.fillStyle   = hasNudge ? 'rgba(61,214,140,0.06)' : 'rgba(233,69,96,0.04)';
 
         ctx.beginPath();
         ctx.moveTo(cx,      cy - hh);  // top

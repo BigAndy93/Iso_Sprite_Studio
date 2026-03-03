@@ -15,6 +15,7 @@ const UI = (() => {
     _wireBrush();
     _wireToolbar();
     _wirePivotPanel();
+    _wireDiamondNudgePanel();
     _wireBgPanel();
     _wireFxPanel();
     _wireViewToggles();
@@ -253,6 +254,7 @@ const UI = (() => {
     const h = parseInt(document.getElementById('canvas-h').value, 10) || 512;
     S.initPixels(w, h, false);
     S.pivots = {};
+    S.diamondNudges = {};
     S.history = []; S.historyIndex = -1;
     Renderer.resizeCanvases(w, h);
     Renderer.drawChecker();
@@ -436,6 +438,120 @@ const UI = (() => {
   function updateActiveTileLabel() {
     const lbl = document.getElementById('active-tile-lbl');
     if (lbl) lbl.textContent = `${S.activeTileX}, ${S.activeTileY}`;
+  }
+
+  /* ──────────────────────────────────────────
+     ISO Diamond Nudge panel
+     ────────────────────────────────────────── */
+  function _wireDiamondNudgePanel() {
+    // Helper: read X/Y from whichever inputs exist and apply
+    function _applyNudgeFromInputs() {
+      const xEl = document.getElementById('nudge-x');
+      const yEl = document.getElementById('nudge-y');
+      const dx = parseInt(xEl?.value, 10);
+      const dy = parseInt(yEl?.value, 10);
+      if (!isNaN(dx) && !isNaN(dy)) {
+        S.setDiamondNudge(S.activeTileX, S.activeTileY, dx, dy);
+        _syncNudgeInputs(dx, dy);
+        if (S.showIso) Renderer.drawOverlay();
+      }
+    }
+
+    // Sync both desktop and drawer nudge inputs to the given values
+    function _syncNudgeInputs(dx, dy) {
+      ['nudge-x','d-nudge-x'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = dx;
+      });
+      ['nudge-y','d-nudge-y'].forEach(id => {
+        const el = document.getElementById(id);
+        if (el) el.value = dy;
+      });
+    }
+
+    // Wire X/Y number inputs
+    ['nudge-x','nudge-y','d-nudge-x','d-nudge-y'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('change', _applyNudgeFromInputs);
+    });
+
+    // Nudge direction buttons (desktop + drawer)
+    const directions = [
+      ['btn-nudge-left',       'd-btn-nudge-left',  -1,  0],
+      ['btn-nudge-right',      'd-btn-nudge-right',  1,  0],
+      ['btn-nudge-up',         'd-btn-nudge-up',     0, -1],
+      ['btn-nudge-down',       'd-btn-nudge-down',   0,  1],
+    ];
+
+    directions.forEach(([id, dId, ddx, ddy]) => {
+      [id, dId].forEach(btnId => {
+        const el = document.getElementById(btnId);
+        if (!el) return;
+        el.addEventListener('click', () => {
+          const cur = S.getDiamondNudge(S.activeTileX, S.activeTileY);
+          const nx = (cur ? cur.dx : 0) + ddx;
+          const ny = (cur ? cur.dy : 0) + ddy;
+          S.setDiamondNudge(S.activeTileX, S.activeTileY, nx, ny);
+          _syncNudgeInputs(nx, ny);
+          if (S.showIso) Renderer.drawOverlay();
+        });
+      });
+    });
+
+    // Clear button
+    ['btn-nudge-clear','d-btn-nudge-clear'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('click', () => {
+        S.clearDiamondNudge(S.activeTileX, S.activeTileY);
+        updateDiamondNudgePanel();
+        if (S.showIso) Renderer.drawOverlay();
+      });
+    });
+
+    // Copy nudge
+    const btnCopy = document.getElementById('btn-nudge-copy');
+    if (btnCopy) {
+      btnCopy.addEventListener('click', () => {
+        S.copiedNudge = S.getDiamondNudge(S.activeTileX, S.activeTileY);
+        if (S.copiedNudge) {
+          btnCopy.textContent = '✓ Copied';
+          setTimeout(() => { btnCopy.textContent = 'Copy'; }, 1200);
+        }
+      });
+    }
+
+    // Paste All
+    ['btn-nudge-paste-all','d-btn-nudge-paste-all'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('click', () => {
+        if (!S.copiedNudge) return;
+        for (let ty = 0; ty < S.tilesY; ty++) {
+          for (let tx = 0; tx < S.tilesX; tx++) {
+            S.setDiamondNudge(tx, ty, S.copiedNudge.dx, S.copiedNudge.dy);
+          }
+        }
+        if (S.showIso) Renderer.drawOverlay();
+      });
+    });
+  }
+
+  function updateDiamondNudgePanel() {
+    const n   = S.getDiamondNudge(S.activeTileX, S.activeTileY);
+    const lbl = document.getElementById('nudge-tile-lbl');
+    if (lbl) lbl.textContent = `${S.activeTileX}, ${S.activeTileY}`;
+    const dx = n ? n.dx : '';
+    const dy = n ? n.dy : '';
+    ['nudge-x','d-nudge-x'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = dx;
+    });
+    ['nudge-y','d-nudge-y'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.value = dy;
+    });
   }
 
   /* ──────────────────────────────────────────
@@ -871,6 +987,7 @@ const UI = (() => {
           S.activeTileX = tx;
           S.activeTileY = ty;
           updatePivotPanel();
+          updateDiamondNudgePanel();
           updateActiveTileLabel();
           updateTileNav();
           Renderer.drawOverlay();
@@ -986,6 +1103,7 @@ const UI = (() => {
     updateZoomLabel,
     updateTileNav,
     updatePivotPanel,
+    updateDiamondNudgePanel,
     updateActiveTileLabel,
     updateStatusBar,
     updateSheetLabel,
