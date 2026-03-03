@@ -4,8 +4,8 @@
 
 const S = {
   /* ── Sheet dimensions ── */
-  sheetW: 256,
-  sheetH: 256,
+  sheetW: 512,
+  sheetH: 512,
 
   /* ── Tile layout ── */
   tileW:  128,
