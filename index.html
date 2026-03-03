@@ -516,6 +516,47 @@
     <span id="st-pen" class="desktop-only">–</span>
   </footer>
 
+  <!-- ══════════════════════════════════════════
+       TEMPLATE PICKER MODAL
+       ══════════════════════════════════════════ -->
+  <div id="template-modal" class="tpl-backdrop hidden" role="dialog" aria-modal="true" aria-label="Choose a template">
+    <div class="tpl-dialog">
+      <h2 class="tpl-title">New Sheet</h2>
+      <p class="tpl-subtitle">Choose a starting template</p>
+      <div class="tpl-grid">
+
+        <button class="tpl-card" data-tpl="blank">
+          <div class="tpl-preview tpl-preview--blank">
+            <div class="tpl-tile"></div>
+          </div>
+          <div class="tpl-name">Blank</div>
+          <div class="tpl-desc">128 × 128 · 1 col × 1 row</div>
+        </button>
+
+        <button class="tpl-card" data-tpl="4-direction">
+          <div class="tpl-preview tpl-preview--4dir">
+            <div class="tpl-tile"></div><div class="tpl-tile"></div>
+            <div class="tpl-tile"></div><div class="tpl-tile"></div>
+          </div>
+          <div class="tpl-name">4-Direction</div>
+          <div class="tpl-desc">256 × 256 · 2 col × 2 row<br>N / E / S / W faces</div>
+        </button>
+
+        <button class="tpl-card" data-tpl="animation">
+          <div class="tpl-preview tpl-preview--anim">
+            <div class="tpl-tile"></div><div class="tpl-tile"></div>
+            <div class="tpl-tile"></div><div class="tpl-tile"></div>
+            <div class="tpl-tile"></div><div class="tpl-tile"></div>
+          </div>
+          <div class="tpl-name">Animation</div>
+          <div class="tpl-desc">768 × 128 · 6 col × 1 row</div>
+        </button>
+
+      </div>
+      <button id="tpl-cancel" class="tpl-cancel">Cancel</button>
+    </div>
+  </div>
+
   <script src="js/state.js"></script>
   <script src="js/renderer.js"></script>
   <script src="js/tools.js"></script>

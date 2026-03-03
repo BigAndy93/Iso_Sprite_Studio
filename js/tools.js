@@ -18,6 +18,8 @@ const Tools = (() => {
   let pinchStartPanY = 0;
   let pinchMidX = 0;
   let pinchMidY = 0;
+  let prevMidX = 0;   // for two-finger pan delta
+  let prevMidY = 0;
 
   /* ──────────────────────────────────────────
      init: attach all pointer events to overlay
@@ -323,6 +325,8 @@ const Tools = (() => {
     pinchStartZoom = S.zoom;
     pinchStartPanX = S.panX;
     pinchStartPanY = S.panY;
+    prevMidX = 0;
+    prevMidY = 0;
   }
 
   function _updateGesture() {
@@ -341,6 +345,8 @@ const Tools = (() => {
       pinchStartZoom = S.zoom;
       pinchMidX = mid.x;
       pinchMidY = mid.y;
+      prevMidX  = mid.x;
+      prevMidY  = mid.y;
       return;
     }
 
@@ -356,6 +362,12 @@ const Tools = (() => {
     S.panX = mx - (mx - S.panX) * (newZoom / S.zoom);
     S.panY = my - (my - S.panY) * (newZoom / S.zoom);
     S.zoom = newZoom;
+
+    // Two-finger pan: follow midpoint movement
+    S.panX += mid.x - prevMidX;
+    S.panY += mid.y - prevMidY;
+    prevMidX = mid.x;
+    prevMidY = mid.y;
 
     Renderer.applyTransform();
     if (typeof UI !== 'undefined') UI.updateZoomLabel();
