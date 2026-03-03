@@ -342,6 +342,10 @@ input[type="range"] {
   gap: 2px;
 }
 .zoom-lbl { font-size: 10px; color: var(--text); font-variant-numeric: tabular-nums; }
+.zoom-lbl-edit { cursor: text; border-bottom: 1px dashed var(--border); }
+.zoom-lbl-edit:hover { color: var(--accent); border-bottom-color: var(--accent); }
+.zoom-row { border-top: 1px solid var(--border); padding-top: 5px; gap: 4px; }
+.zoom-row .zoom-lbl { flex: 1; text-align: center; }
 
 /* ══════════════════════════════════════════════
    CANVAS AREA

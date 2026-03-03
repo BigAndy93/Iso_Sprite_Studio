@@ -240,6 +240,17 @@ const UI = (() => {
     if (zi2) zi2.addEventListener('click', () => setZoom(S.zoom * 1.25));
     if (zo2) zo2.addEventListener('click', () => setZoom(S.zoom / 1.25));
 
+    // Mobile drawer zoom buttons
+    const mobZI = document.getElementById('mob-zoom-in');
+    const mobZO = document.getElementById('mob-zoom-out');
+    const mobZF = document.getElementById('mob-zoom-fit');
+    if (mobZI) mobZI.addEventListener('click', () => setZoom(S.zoom * 1.25));
+    if (mobZO) mobZO.addEventListener('click', () => setZoom(S.zoom / 1.25));
+    if (mobZF) mobZF.addEventListener('click', fitToWindow);
+
+    // Click-to-edit zoom labels
+    _wireZoomLabelEdit();
+
     // Mobile undo/redo
     const mobUndo = document.getElementById('mob-undo');
     const mobRedo = document.getElementById('mob-redo');
@@ -912,9 +923,43 @@ const UI = (() => {
 
   function updateZoomLabel() {
     const pct = Math.round(S.zoom * 100) + '%';
-    ['zoom-label','zoom-label2','st-zoom'].forEach(id => {
+    ['zoom-label','zoom-label2','mob-zoom-label','st-zoom'].forEach(id => {
       const el = document.getElementById(id);
-      if (el) el.textContent = id === 'st-zoom' ? pct : pct;
+      if (el && el.tagName === 'SPAN') el.textContent = pct;
+    });
+  }
+
+  function _wireZoomLabelEdit() {
+    ['zoom-label','zoom-label2','mob-zoom-label'].forEach(id => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.addEventListener('click', () => {
+        const current = Math.round(S.zoom * 100);
+        const inp = document.createElement('input');
+        inp.type = 'number';
+        inp.value = current;
+        inp.min = 5;
+        inp.max = 3200;
+        inp.style.cssText = 'width:52px;font-size:10px;text-align:center;background:var(--panel);color:var(--text);border:1px solid var(--border);border-radius:3px;padding:1px 2px;';
+        el.replaceWith(inp);
+        inp.select();
+        const commit = () => {
+          const v = parseFloat(inp.value);
+          const span = document.createElement('span');
+          span.id = id;
+          span.className = el.className;
+          span.title = el.title;
+          inp.replaceWith(span);
+          _wireZoomLabelEdit();   // re-bind on the new element
+          if (!isNaN(v) && v > 0) setZoom(v / 100);
+          else updateZoomLabel();
+        };
+        inp.addEventListener('blur', commit);
+        inp.addEventListener('keydown', e => {
+          if (e.key === 'Enter') { e.preventDefault(); inp.blur(); }
+          if (e.key === 'Escape') { inp.value = current; inp.blur(); }
+        });
+      });
     });
   }
 

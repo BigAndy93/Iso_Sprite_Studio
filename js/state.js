@@ -8,10 +8,10 @@ const S = {
   sheetH: 512,
 
   /* ── Tile layout ── */
-  tileW:  64,
-  tileH:  64,
-  tilesX:  4,
-  tilesY:  4,
+  tileW:  128,
+  tileH:  128,
+  tilesX:  2,
+  tilesY:  2,
 
   /* ── ISO diamond guide ── */
   showIso:  false,
