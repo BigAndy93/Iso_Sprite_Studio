@@ -22,6 +22,7 @@ const UI = (() => {
     _wireMobileDrawer();
     _wireMobileBar();
     _syncDesktopMobile();
+    _wireTemplateModal();
   }
 
   /* ──────────────────────────────────────────
@@ -258,20 +259,80 @@ const UI = (() => {
     if (mobRedo) mobRedo.addEventListener('click', _redo);
   }
 
+  /* ── Templates ── */
+  const TEMPLATES = {
+    blank: {
+      canvasW: 128, canvasH: 128,
+      tileW: 128,   tileH: 128,
+      tilesX: 1,    tilesY: 1,
+    },
+    '4-direction-flip': {
+      canvasW: 256, canvasH: 256,
+      tileW: 128,   tileH: 128,
+      tilesX: 2,    tilesY: 2,
+    },
+    animation: {
+      canvasW: 768, canvasH: 128,
+      tileW: 128,   tileH: 128,
+      tilesX: 6,    tilesY: 1,
+    },
+  };
+
   function _handleNew() {
-    if (!confirm('Start a new sheet? Unsaved work will be lost.')) return;
-    const w = parseInt(document.getElementById('canvas-w').value, 10) || 512;
-    const h = parseInt(document.getElementById('canvas-h').value, 10) || 512;
-    S.initPixels(w, h, false);
+    document.getElementById('template-modal').classList.remove('hidden');
+  }
+
+  function _applyTemplate(tplKey) {
+    const tpl = TEMPLATES[tplKey];
+    document.getElementById('template-modal').classList.add('hidden');
+
+    // Apply tile layout to state
+    S.tileW  = tpl.tileW;
+    S.tileH  = tpl.tileH;
+    S.tilesX = tpl.tilesX;
+    S.tilesY = tpl.tilesY;
+
+    // Sync all tile inputs (toolbar + drawer)
+    const fieldMap = {
+      'tile-w': tpl.tileW, 'tile-h': tpl.tileH,
+      'tiles-x': tpl.tilesX, 'tiles-y': tpl.tilesY,
+      'd-tile-w': tpl.tileW, 'd-tile-h': tpl.tileH,
+      'd-tiles-x': tpl.tilesX, 'd-tiles-y': tpl.tilesY,
+      'canvas-w': tpl.canvasW, 'canvas-h': tpl.canvasH,
+      'd-canvas-w': tpl.canvasW, 'd-canvas-h': tpl.canvasH,
+    };
+    Object.entries(fieldMap).forEach(([id, val]) => {
+      const el = document.getElementById(id);
+      if (el) el.value = val;
+    });
+
+    // Create new sheet
+    S.initPixels(tpl.canvasW, tpl.canvasH, false);
     S.pivots = {};
     S.history = []; S.historyIndex = -1;
-    Renderer.resizeCanvases(w, h);
+    Renderer.resizeCanvases(tpl.canvasW, tpl.canvasH);
     Renderer.drawChecker();
     Renderer.drawSprite();
     Renderer.drawOverlay();
     S.saveHistory();
     updateTileNav();
     updateSheetLabel();
+    fitToWindow();
+  }
+
+  function _wireTemplateModal() {
+    document.querySelectorAll('.tpl-card').forEach(btn => {
+      btn.addEventListener('click', () => _applyTemplate(btn.dataset.tpl));
+    });
+    document.getElementById('tpl-cancel').addEventListener('click', () => {
+      document.getElementById('template-modal').classList.add('hidden');
+    });
+    // Close on backdrop click
+    document.getElementById('template-modal').addEventListener('click', e => {
+      if (e.target === e.currentTarget) {
+        document.getElementById('template-modal').classList.add('hidden');
+      }
+    });
   }
 
   function _applyCanvas() {

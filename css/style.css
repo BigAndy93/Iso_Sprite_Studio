@@ -844,6 +844,137 @@ select {
   padding: 2px 4px;
 }
 
+/* ══════════════════════════════════════════════
+   TEMPLATE PICKER MODAL
+   ══════════════════════════════════════════════ */
+.tpl-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.72);
+  z-index: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.tpl-dialog {
+  background: var(--bg1);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px 20px 20px;
+  width: min(94vw, 520px);
+  box-shadow: 0 24px 64px rgba(0, 0, 0, 0.7);
+}
+
+.tpl-title {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.tpl-subtitle {
+  font-size: 12px;
+  color: var(--text-dim);
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.tpl-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.tpl-card {
+  background: var(--bg2);
+  border: 2px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 8px 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  transition: border-color 0.15s, background 0.15s, transform 0.1s;
+  min-height: var(--touch-min);
+  color: inherit;
+  font-family: inherit;
+}
+
+.tpl-card:hover,
+.tpl-card:focus-visible {
+  border-color: var(--accent);
+  background: rgba(124, 106, 247, 0.12);
+  outline: none;
+}
+
+.tpl-card:active {
+  transform: scale(0.97);
+}
+
+/* Mini canvas previews inside each card */
+.tpl-preview {
+  display: grid;
+  gap: 2px;
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 3px;
+  background: var(--bg0);
+}
+
+.tpl-preview--blank  { grid-template-columns: 1fr; width: 36px; height: 36px; }
+.tpl-preview--4dir   { grid-template-columns: 1fr 1fr; width: 36px; height: 36px; }
+.tpl-preview--anim   { grid-template-columns: repeat(6, 1fr); width: 60px; height: 16px; }
+
+.tpl-tile {
+  background: var(--bg3);
+  border-radius: 2px;
+}
+
+.tpl-name {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.tpl-desc {
+  font-size: 10px;
+  color: var(--text-dim);
+  text-align: center;
+  line-height: 1.4;
+}
+
+.tpl-cancel {
+  width: 100%;
+  padding: 11px;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text-dim);
+  cursor: pointer;
+  font-size: 13px;
+  font-family: inherit;
+  transition: color 0.15s, border-color 0.15s;
+  min-height: var(--touch-min);
+}
+
+.tpl-cancel:hover {
+  color: var(--text);
+  border-color: var(--text-dim);
+}
+
+@media (max-width: 400px) {
+  .tpl-grid { grid-template-columns: 1fr; }
+  .tpl-preview--4dir  { width: 48px; height: 48px; }
+  .tpl-preview--anim  { width: 96px; height: 24px; }
+}
+
 /* Marching ants selection */
 @keyframes march {
   to { stroke-dashoffset: -12; }
