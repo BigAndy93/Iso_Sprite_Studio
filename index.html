@@ -28,9 +28,9 @@
 
     <div class="toolbar-group" id="tg-canvas">
       <label class="tb-label">Canvas</label>
-      <input type="number" id="canvas-w" value="512" min="64" max="4096" title="Sheet width (px)">
+      <input type="number" id="canvas-w" value="256" min="64" max="4096" title="Sheet width (px)">
       <span class="tb-x">×</span>
-      <input type="number" id="canvas-h" value="512" min="64" max="4096" title="Sheet height (px)">
+      <input type="number" id="canvas-h" value="256" min="64" max="4096" title="Sheet height (px)">
       <button id="btn-apply-canvas" class="tb-btn">Apply</button>
     </div>
 
@@ -38,13 +38,13 @@
 
     <div class="toolbar-group desktop-only" id="tg-tiles">
       <label class="tb-label">Tile</label>
-      <input type="number" id="tile-w" value="64" min="8" max="512" title="Tile width (px)">
+      <input type="number" id="tile-w" value="128" min="8" max="512" title="Tile width (px)">
       <span class="tb-x">×</span>
-      <input type="number" id="tile-h" value="64" min="8" max="512" title="Tile height (px)">
+      <input type="number" id="tile-h" value="128" min="8" max="512" title="Tile height (px)">
       <span class="tb-pipe">|</span>
-      <input type="number" id="tiles-x" value="4" min="1" max="64" title="Columns">
+      <input type="number" id="tiles-x" value="2" min="1" max="64" title="Columns">
       <label class="tb-unit">cols</label>
-      <input type="number" id="tiles-y" value="4" min="1" max="64" title="Rows">
+      <input type="number" id="tiles-y" value="2" min="1" max="64" title="Rows">
       <label class="tb-unit">rows</label>
       <button id="btn-apply-tiles" class="tb-btn">Apply</button>
     </div>
@@ -201,15 +201,15 @@
         <div class="prop-body" id="sec-tile-cfg">
           <div class="prop-row">
             <label class="prop-label">Tile W</label>
-            <input type="number" id="tile-w-m" value="64" min="8" max="512">
+            <input type="number" id="tile-w-m" value="128" min="8" max="512">
             <label class="prop-label">H</label>
-            <input type="number" id="tile-h-m" value="64" min="8" max="512">
+            <input type="number" id="tile-h-m" value="128" min="8" max="512">
           </div>
           <div class="prop-row">
             <label class="prop-label">Cols</label>
-            <input type="number" id="tiles-x-m" value="4" min="1" max="64">
+            <input type="number" id="tiles-x-m" value="2" min="1" max="64">
             <label class="prop-label">Rows</label>
-            <input type="number" id="tiles-y-m" value="4" min="1" max="64">
+            <input type="number" id="tiles-y-m" value="2" min="1" max="64">
           </div>
           <button id="btn-apply-tiles-m" class="full-btn">Apply Layout</button>
         </div>
@@ -433,12 +433,12 @@
       <!-- Layout tab -->
       <div class="drawer-panel" id="dtab-layout">
         <div class="drawer-row">
-          <label>Tile W</label><input type="number" id="d-tile-w" value="64" min="8" max="512">
-          <label>H</label><input type="number" id="d-tile-h" value="64" min="8" max="512">
+          <label>Tile W</label><input type="number" id="d-tile-w" value="128" min="8" max="512">
+          <label>H</label><input type="number" id="d-tile-h" value="128" min="8" max="512">
         </div>
         <div class="drawer-row">
-          <label>Cols</label><input type="number" id="d-tiles-x" value="4" min="1" max="64">
-          <label>Rows</label><input type="number" id="d-tiles-y" value="4" min="1" max="64">
+          <label>Cols</label><input type="number" id="d-tiles-x" value="2" min="1" max="64">
+          <label>Rows</label><input type="number" id="d-tiles-y" value="2" min="1" max="64">
         </div>
         <button id="d-btn-apply-tiles" class="full-btn">Apply Layout</button>
         <div class="drawer-row" style="margin-top:6px">
@@ -446,8 +446,8 @@
           <label>H</label><input type="number" id="d-diamond-h" value="32" min="4" max="256">
         </div>
         <div class="drawer-row">
-          <label>Canvas W</label><input type="number" id="d-canvas-w" value="512" min="64" max="4096">
-          <label>H</label><input type="number" id="d-canvas-h" value="512" min="64" max="4096">
+          <label>Canvas W</label><input type="number" id="d-canvas-w" value="256" min="64" max="4096">
+          <label>H</label><input type="number" id="d-canvas-h" value="256" min="64" max="4096">
         </div>
         <button id="d-btn-apply-canvas" class="full-btn">Apply Canvas Size</button>
       </div>
