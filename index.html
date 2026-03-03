@@ -74,7 +74,7 @@
 
     <div class="toolbar-group desktop-only" id="tg-zoom">
       <button id="btn-zoom-out" class="tb-btn icon-btn" title="Zoom out">−</button>
-      <span id="zoom-label">100%</span>
+      <span id="zoom-label" class="zoom-lbl-edit" title="Click to enter zoom %">100%</span>
       <button id="btn-zoom-in"  class="tb-btn icon-btn" title="Zoom in">+</button>
       <button id="btn-zoom-fit" class="tb-btn" title="Fit to window">Fit</button>
     </div>
@@ -175,7 +175,7 @@
 
       <div class="zoom-section desktop-only">
         <button id="btn-zoom-out2" class="tb-btn icon-btn">−</button>
-        <span id="zoom-label2" class="zoom-lbl">100%</span>
+        <span id="zoom-label2" class="zoom-lbl zoom-lbl-edit" title="Click to enter zoom %">100%</span>
         <button id="btn-zoom-in2"  class="tb-btn icon-btn">+</button>
       </div>
     </aside>
@@ -411,6 +411,12 @@
           <label class="toggle-wrap small"><input type="checkbox" id="d-toggle-grid" checked><span class="toggle-slider"></span><span class="toggle-text">Grid</span></label>
           <label class="toggle-wrap small"><input type="checkbox" id="d-toggle-snap" checked><span class="toggle-slider"></span><span class="toggle-text">Snap</span></label>
           <label class="toggle-wrap small"><input type="checkbox" id="d-toggle-iso"><span class="toggle-slider"></span><span class="toggle-text">ISO◇</span></label>
+        </div>
+        <div class="drawer-row zoom-row">
+          <button id="mob-zoom-out" class="tb-btn icon-btn" title="Zoom out">−</button>
+          <span id="mob-zoom-label" class="zoom-lbl zoom-lbl-edit" title="Click to enter zoom %">100%</span>
+          <button id="mob-zoom-in"  class="tb-btn icon-btn" title="Zoom in">+</button>
+          <button id="mob-zoom-fit" class="tb-btn" title="Fit to window">Fit</button>
         </div>
       </div>
 
