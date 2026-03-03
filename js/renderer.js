@@ -89,15 +89,19 @@ const Renderer = (() => {
   function _drawGrid(ctx) {
     const lw = Math.max(0.5, 1 / S.zoom);
 
-    // Minor lines (every tile)
+    // Minor lines — use tilesX/tilesY as the authoritative count
+    const gridW = S.tilesX * S.tileW;
+    const gridH = S.tilesY * S.tileH;
     ctx.strokeStyle = 'rgba(200,200,255,0.12)';
     ctx.lineWidth   = lw;
     ctx.beginPath();
-    for (let x = 0; x <= S.sheetW; x += S.tileW) {
-      ctx.moveTo(x, 0); ctx.lineTo(x, S.sheetH);
+    for (let tx = 0; tx <= S.tilesX; tx++) {
+      const x = tx * S.tileW;
+      ctx.moveTo(x, 0); ctx.lineTo(x, gridH);
     }
-    for (let y = 0; y <= S.sheetH; y += S.tileH) {
-      ctx.moveTo(0, y); ctx.lineTo(S.sheetW, y);
+    for (let ty = 0; ty <= S.tilesY; ty++) {
+      const y = ty * S.tileH;
+      ctx.moveTo(0, y); ctx.lineTo(gridW, y);
     }
     ctx.stroke();
 
